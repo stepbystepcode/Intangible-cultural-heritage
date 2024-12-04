@@ -10,8 +10,8 @@ import L, { LeafletMouseEvent } from 'leaflet';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-// 修复默认图标路径问题
 L.Icon.Default.prototype.options.iconUrl = markerIcon;
 L.Icon.Default.prototype.options.iconRetinaUrl = markerIcon2x;
 L.Icon.Default.prototype.options.shadowUrl = markerShadow;
@@ -40,13 +40,19 @@ const App = () => {
 
   return (
     <div className="app">
-      <header className="toolbar">
-        <Input placeholder="搜索..." />
-        <Button onClick={() => setAddingMarker(true)}>添加点</Button>
-        <Button onClick={toggleDrawer}>详细信息</Button>
-      </header>
+      <Card className="absolute top-4 right-4 z-[1000] w-72">
+        <CardHeader>
+          <CardTitle>工具栏</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Input placeholder="搜索..." />
+          <div className='space-x-4'>
+            <Button onClick={() => setAddingMarker(true)}>添加点</Button>
+            <Button onClick={toggleDrawer}>详细信息</Button>
+          </div>
+        </CardContent>
+      </Card>
       <Drawer open={drawerOpen} onClose={toggleDrawer}>
-        {/* 详细信息面板内容 */}
       </Drawer>
       <MapContainer
         className="map"

@@ -32,7 +32,7 @@ This project is a collaborative database course design focused on creating an **
 
 ### Other Tools
 
-- **[Drawio](https://draw.io/)**: ERD design tool used to create the database schema
+- <a href="https://draw.io" target="_blank" rel="noopener">**Draw.io**</a>: ER design tool used to create the database schema
 - **[Git](https://git-scm.com/)** and **[GitHub](https://github.com/)**: Version control and project hosting
 - **[WebStorm](https://www.jetbrains.com/webstorm/)** & **[IntelliJ IDEA](https://www.jetbrains.com/idea/)**: IDEs for frontend and backend development
 - **[Postman](https://www.postman.com/)**: API testing and development

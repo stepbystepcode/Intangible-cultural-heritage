@@ -24,39 +24,39 @@ const App = () => {
   const [loading, setLoading] = useState<boolean>(false); // 加载状态
   const [error, setError] = useState<string | null>(null); // 错误状态
 
-  // 根据选中的标签请求不同的数据
+  // 根据标签决定请求的API接口URL
+  const endpointMap: Record<string, string> = {
+    '传承人': '/api/inheritors',
+    '非物质文化遗产项目': '/api/projects',
+    '保护单位': '/api/protection-units'
+  };
+
   useEffect(() => {
     const fetchMarkers = async () => {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get('/api/getIch', {
-          params: { type: selectedTab }
+        const url = endpointMap[selectedTab];
+        const response = await axios.get(url);
+        const data = response.data;
+
+        // data应为一个数组，其中每个对象都包含latitude和longitude字段(假设后端已经实现)
+        const locations = data.map((item: any) => {
+          const latitude = item.latitude;
+          const longitude = item.longitude;
+          if (latitude && longitude) {
+            return {
+              position: new LatLng(latitude, longitude),
+              details: item,
+            };
+          }
+          return null;
         });
-        console.log(`API Response for ${selectedTab}:`, response.data);
 
-        if (response.data.status === 'success') {
-          const locations = response.data.data.map((item: any) => {
-            const latitude = item.location?.latitude;
-            const longitude = item.location?.longitude;
-
-            if (latitude && longitude) {
-              return {
-                position: new LatLng(latitude, longitude),
-                details: item, // 保存完整的详情信息
-              };
-            }
-            return null;
-          });
-
-          // 过滤掉无效的位置信息
-          const validLocations = locations.filter((loc: any) => loc !== null);
-          setMarkers(validLocations);
-        } else {
-          setError('数据获取失败');
-        }
+        const validLocations = locations.filter((loc: any) => loc !== null);
+        setMarkers(validLocations);
       } catch (error) {
-        console.error(`Error fetching /api/getIch for ${selectedTab}:`, error);
+        console.error(`Error fetching ${endpointMap[selectedTab]}:`, error);
         setError('数据获取出错');
       } finally {
         setLoading(false);
@@ -68,7 +68,7 @@ const App = () => {
 
   return (
     <div className="app">
-      {/* 合并后的工具栏卡片 */}
+      {/* 工具栏卡片 */}
       <Card className="absolute top-4 right-4 z-[1000] w-80">
         <CardHeader>
           <CardTitle>工具栏</CardTitle>
@@ -88,7 +88,7 @@ const App = () => {
 
           {/* 切换侧边栏按钮 */}
           <div className="space-x-4">
-            <Button onClick={() => { /* 切换侧边栏的逻辑 */ }}>切换侧边栏</Button>
+            <Button onClick={() => { /* 切换侧边栏逻辑 */ }}>切换侧边栏</Button>
           </div>
 
           {/* 加载指示器 */}
@@ -101,11 +101,33 @@ const App = () => {
           {selectedMarker && (
             <div className="mt-4">
               <h3 className="text-lg font-bold">详细信息</h3>
-              <p><strong>项目名称:</strong> {selectedMarker.details.projectName}</p>
-              <p><strong>分类:</strong> {selectedMarker.details.category}</p>
-              <p><strong>公布日期:</strong> {selectedMarker.details.announcementDate}</p>
-              <p><strong>类型:</strong> {selectedMarker.details.type}</p>
-              <p><strong>区域:</strong> {selectedMarker.details.applicationRegion}</p>
+              {selectedTab === '非物质文化遗产项目' && (
+                <>
+                  <p><strong>项目名称:</strong> {selectedMarker.details.projectName}</p>
+                  <p><strong>分类:</strong> {selectedMarker.details.category}</p>
+                  <p><strong>公布日期:</strong> {selectedMarker.details.announcementDate}</p>
+                  <p><strong>类型:</strong> {selectedMarker.details.type}</p>
+                  <p><strong>区域:</strong> {selectedMarker.details.applicationRegion}</p>
+                </>
+              )}
+
+              {selectedTab === '传承人' && (
+                <>
+                  <p><strong>姓名:</strong> {selectedMarker.details.name}</p>
+                  <p><strong>性别:</strong> {selectedMarker.details.gender}</p>
+                  <p><strong>民族:</strong> {selectedMarker.details.ethnicity}</p>
+                  <p><strong>类别:</strong> {selectedMarker.details.category}</p>
+                  <p><strong>关联项目ID:</strong> {selectedMarker.details.projectID}</p>
+                </>
+              )}
+
+              {selectedTab === '保护单位' && (
+                <>
+                  <p><strong>单位名称:</strong> {selectedMarker.details.unitName}</p>
+                  <p><strong>区域:</strong> {selectedMarker.details.region}</p>
+                  <p><strong>联系方式:</strong> {selectedMarker.details.contactInfo}</p>
+                </>
+              )}
             </div>
           )}
         </CardContent>
@@ -121,7 +143,7 @@ const App = () => {
       >
         <TileLayer
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+          attribution='&copy; OpenStreetMap contributors'
         />
         {markers.map((marker, idx) => (
           <Marker
@@ -129,12 +151,17 @@ const App = () => {
             position={marker.position}
             eventHandlers={{
               click: () => {
-                setSelectedMarker(marker); // 设置选中的标注点
+                setSelectedMarker(marker);
+                console.log(marker);
+                
               },
             }}
           >
             <Popup>
-              <strong>{marker.details.projectName}</strong>
+              {/* 根据不同类型显示相应的名称字段 */}
+              {selectedTab === '非物质文化遗产项目' && <strong>{marker.details.projectName}</strong>}
+              {selectedTab === '传承人' && <strong>{marker.details.name}</strong>}
+              {selectedTab === '保护单位' && <strong>{marker.details.unitName}</strong>}
             </Popup>
           </Marker>
         ))}

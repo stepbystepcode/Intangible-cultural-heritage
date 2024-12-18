@@ -42,7 +42,7 @@ class ProjectController(val repository: ProjectRepository,val logRepository: Log
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Create a new national heritage project", description = "Create a new project and store it in the database")
+    @Operation(summary = "Get project by ID", description = "input ID then get project")
     @ApiResponses(value = [
         ApiResponse(responseCode = "201", description = "Project successfully created"),
         ApiResponse(responseCode = "400", description = "Bad request")

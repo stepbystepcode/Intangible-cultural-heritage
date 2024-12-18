@@ -30,6 +30,7 @@ class UnescoHeritageController(val repository: UnescoHeritageRepository,val logR
     @ApiResponses(value = [
         ApiResponse(responseCode = "200", description = "Successfully retrieved UNESCO heritage site"),
         ApiResponse(responseCode = "404", description = "UNESCO heritage site not found")
+
     ])
     fun getHeritageById(@PathVariable id: Int): ResponseEntity<UnescoHeritage> {
         val heritage = repository.findById(id) ?: return ResponseEntity(HttpStatus.NOT_FOUND)
@@ -41,6 +42,7 @@ class UnescoHeritageController(val repository: UnescoHeritageRepository,val logR
     @ApiResponses(value = [
         ApiResponse(responseCode = "201", description = "UNESCO heritage site successfully created"),
         ApiResponse(responseCode = "400", description = "Bad request")
+        ApiResponse(responseCode = "500", description = "Internal server error")
     ])
     fun createHeritage(@RequestBody heritage: UnescoHeritage): ResponseEntity<Map<String, Int>> {
         val newId = repository.create(heritage)

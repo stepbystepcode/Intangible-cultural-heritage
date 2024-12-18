@@ -3,8 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import React from 'react';
 
+import React, { useState } from 'react';
+
+import FormDetails from './FormDetails';
 interface ToolbarProps {
   selectedTab: string;
   onTabChange: (value: string) => void;
@@ -14,6 +16,11 @@ interface ToolbarProps {
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({ selectedTab, onTabChange, loading, error, children }) => {
+  const [formVisible, setFormVisible] = useState(false);
+  const handleFormSubmit = (formData: any) => {
+    console.log("提交的表单数据:", formData);
+    setFormVisible(false); // 提交后关闭表单
+  };
   return (
     <Card className="absolute top-4 right-4 z-[1000]">
       <CardHeader>
@@ -33,9 +40,11 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedTab, onTabChange, loading, er
 
         {/* 切换侧边栏按钮 */}
         <div className="space-x-4">
-          <Button onClick={() => { /* 切换侧边栏逻辑 */ }}>切换侧边栏</Button>
+          <Button onClick={() => {setFormVisible(true)}}>添加</Button>
         </div>
-
+        {formVisible && (
+          <FormDetails selectedTab={selectedTab} onSubmit={handleFormSubmit} />
+        )}
         {/* 加载指示器 */}
         {loading && <p>加载中...</p>}
 

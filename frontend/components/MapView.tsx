@@ -1,6 +1,6 @@
 // MapView.tsx
 import React from 'react';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
@@ -17,11 +17,26 @@ interface MapViewProps {
     position: { lat: number, lng: number };
     details: any;
   }[];
+  isAddingMarker?: boolean;
+  onMapClick?: (position: { lat: number, lng: number }) => void;
   selectedTab: string;
   onMarkerClick: (marker: any) => void;
 }
 
-const MapView: React.FC<MapViewProps> = ({ markers, selectedTab, onMarkerClick }) => {
+const MapView: React.FC<MapViewProps> = ({ markers, selectedTab, onMarkerClick, isAddingMarker, onMapClick }) => {
+  const handleMapClick = (e: L.LeafletMouseEvent) => {
+    if (isAddingMarker && onMapClick) {
+      onMapClick(e.latlng);
+    }
+  };
+
+  const MapEvents = () => {
+    useMapEvents({
+      click: handleMapClick,
+    });
+    return null;
+  };
+
   return (
     <MapContainer
       className="map"
@@ -30,6 +45,7 @@ const MapView: React.FC<MapViewProps> = ({ markers, selectedTab, onMarkerClick }
       maxZoom={18}
       style={{ height: '100vh' }}
     >
+      <MapEvents />
       <TileLayer
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; OpenStreetMap contributors'

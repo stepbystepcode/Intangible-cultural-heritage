@@ -1,6 +1,7 @@
 package com.sxu.four.controller
 
 import com.sxu.four.model.UnescoHeritage
+import com.sxu.four.repository.LogRepository
 import com.sxu.four.repository.UnescoHeritageRepository
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/unesco-list")
-class UnescoHeritageController(val repository: UnescoHeritageRepository) {
+class UnescoHeritageController(val repository: UnescoHeritageRepository,val logRepository: LogRepository) {
 
     @GetMapping
     fun getAllHeritage(): ResponseEntity<List<UnescoHeritage>> {
@@ -39,5 +40,12 @@ class UnescoHeritageController(val repository: UnescoHeritageRepository) {
     fun deleteHeritage(@PathVariable id: Int): ResponseEntity<Void> {
         val count = repository.delete(id)
         return if (count > 0) ResponseEntity.noContent().build() else ResponseEntity(HttpStatus.NOT_FOUND)
+    }
+
+    //触发器添加日志
+    @GetMapping("/logs")
+    fun getUnescoHeritageLogs(): ResponseEntity<List<Map<String, Any>>> {
+        val logs = logRepository.getLogsByTable("unesco_heritage_list")
+        return ResponseEntity.ok(logs)
     }
 }

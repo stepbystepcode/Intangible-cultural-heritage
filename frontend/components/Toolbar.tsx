@@ -1,10 +1,10 @@
 // Toolbar.tsx
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import FormDetails from './FormDetails';
 interface ToolbarProps {
@@ -21,12 +21,12 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedTab, onTabChange, loading, er
     console.log("提交的表单数据:", formData);
     setFormVisible(false); // 提交后关闭表单
   };
+  useEffect(() => {
+    setFormVisible(children===null);
+  }, [children]);
   return (
     <Card className="absolute top-4 right-4 z-[1000]">
-      <CardHeader>
-        <CardTitle>工具栏</CardTitle>
-      </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="mt-4 space-y-4">
         <Tabs value={selectedTab} onValueChange={(value) => onTabChange(value)}>
           <TabsList>
             <TabsTrigger value="传承人">传承人</TabsTrigger>
@@ -40,7 +40,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedTab, onTabChange, loading, er
 
         {/* 切换侧边栏按钮 */}
         <div className="space-x-4">
-          <Button onClick={() => {setFormVisible(true)}}>添加</Button>
+        {!formVisible && <Button onClick={() => {setFormVisible(true)}}>添加</Button>}
         </div>
         {formVisible && (
           <FormDetails selectedTab={selectedTab} onSubmit={handleFormSubmit} />
@@ -51,7 +51,7 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedTab, onTabChange, loading, er
         {/* 错误信息 */}
         {error && <p className="text-red-500">{error}</p>}
 
-        {children}
+        {!formVisible && children}
       </CardContent>
     </Card>
   );

@@ -16,7 +16,7 @@ class ProjectRepository(val jdbcTemplate: JdbcTemplate) {
             projectId = rs.getInt("projectid"),
             projectName = rs.getString("projectname"),
             category = rs.getString("category"),
-            announcementDate = rs.getString("announcementdate"),
+            announcementDate = rs.getDate("announcementdate"),
             type = rs.getString("type"),
             applicationRegion = rs.getString("applicationregion"),
             protectionUnitId = rs.getInt("protectionunitid").takeIf { !rs.wasNull() },

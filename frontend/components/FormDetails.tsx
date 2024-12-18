@@ -26,6 +26,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ethnicities } from '@/lib/data';
+import axios from 'axios';
 
 // 为字段配置定义类型
 interface FormField {
@@ -78,6 +79,18 @@ const formFields: FormFields = {
   ],
 };
 
+// 添加手机号验证函数
+const isValidPhone = (phone: string) => {
+  return /^1[3-9]\d{9}$/.test(phone);
+};
+
+// 添加 API 端点映射
+const API_ENDPOINTS = {
+  '传承人': '/api/inheritors',
+  '非物质文化遗产项目': '/api/project',
+  '保护单位': '/api/protection-units'
+} as const;
+
 const FormDetails: React.FC<FormDetailsProps> = ({ selectedTab, onSubmit }) => {
   const [formData, setFormData] = useState<Record<string, string | number>>({});
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -93,7 +106,7 @@ const FormDetails: React.FC<FormDetailsProps> = ({ selectedTab, onSubmit }) => {
   };
 
   // 表单提交处理
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     
     // 重置所有错误
@@ -108,6 +121,12 @@ const FormDetails: React.FC<FormDetailsProps> = ({ selectedTab, onSubmit }) => {
         newErrors[field.name] = `请输入${field.label}`;
         const element = document.querySelector(`input[name="${field.name}"]`);
         if (element instanceof HTMLInputElement) {
+          firstEmptyField = element;
+        }
+      } else if (field.name === 'contactInfo' && !isValidPhone(formData[field.name].toString())) {
+        newErrors[field.name] = '请输入正确的11位手机号';
+        const element = document.querySelector(`input[name="${field.name}"]`);
+        if (element instanceof HTMLInputElement && !firstEmptyField) {
           firstEmptyField = element;
         }
       }
@@ -128,12 +147,23 @@ const FormDetails: React.FC<FormDetailsProps> = ({ selectedTab, onSubmit }) => {
     // 处理表单数据
     const processedData = {
       ...formData,
-      projectID: Number(formData.projectID) || 0, // 使用 0 作为默认值
+      projectId: Number(formData.projectID) || 0,
       latitude: newPosition.lat,
       longitude: newPosition.lng
     };
 
-    onSubmit(processedData);
+    try {
+      const endpoint = API_ENDPOINTS[selectedTab as keyof typeof API_ENDPOINTS];
+      const response = await axios.post(endpoint, processedData);
+      onSubmit(response.data);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setErrors({ submit: error.response?.data?.message || '提交失败，请重试' });
+      } else {
+        setErrors({ submit: '提交失败，请重试' });
+      }
+      console.error('提交错误:', error);
+    }
   };
 
   // 获取当前 Tab 的字段配置

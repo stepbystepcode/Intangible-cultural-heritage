@@ -39,9 +39,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedTab, onTabChange, loading, er
         <Input placeholder="搜索..." />
 
         {/* 切换侧边栏按钮 */}
-        <div className="space-x-4">
-        {!formVisible && <Button onClick={() => {setFormVisible(true)}}>添加</Button>}
-        </div>
         {formVisible && (
           <FormDetails selectedTab={selectedTab} onSubmit={handleFormSubmit} />
         )}
@@ -52,6 +49,23 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedTab, onTabChange, loading, er
         {error && <p className="text-red-500">{error}</p>}
 
         {!formVisible && children}
+        {!formVisible &&  <div className="flex gap-4 mt-6">
+<Button className='w-full' variant='secondary' onClick={() => {setFormVisible(true)}}>添加</Button>
+        <Button
+          type="button"
+          variant="secondary"
+          className="w-full"
+        >
+        修改
+        </Button>
+        <Button 
+          type="submit" 
+          variant="default"
+          className="w-full bg-red-500 hover:bg-red-600 text-white"
+        >
+          删除
+        </Button>
+      </div>}
       </CardContent>
     </Card>
   );

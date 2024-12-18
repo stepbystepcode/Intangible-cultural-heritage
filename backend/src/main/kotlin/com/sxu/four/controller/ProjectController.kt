@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
+import java.sql.Date
+
 @RestController
 @RequestMapping("/api/projects")
 class ProjectController(val repository: ProjectRepository,val logRepository: LogRepository) {
@@ -19,7 +21,7 @@ class ProjectController(val repository: ProjectRepository,val logRepository: Log
             projectId = rs.getInt("projectid"),
             projectName = rs.getString("projectname"),
             category = rs.getString("category"),
-            announcementDate = rs.getString("announcementdate"),
+            announcementDate = rs.getDate("announcementdate"),
             type = rs.getString("type"),
             applicationRegion = rs.getString("applicationregion"),
             protectionUnitId = rs.getInt("protectionunitid"),

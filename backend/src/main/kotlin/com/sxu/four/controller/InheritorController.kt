@@ -68,4 +68,8 @@ class InheritorController(val repository: InheritorRepository) {
         val count = repository.delete(id)
         return if (count > 0) ResponseEntity.noContent().build() else ResponseEntity(HttpStatus.NOT_FOUND)
     }
+
+
 }
+
+

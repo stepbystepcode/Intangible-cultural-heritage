@@ -150,4 +150,11 @@ class ProjectRepository(val jdbcTemplate: JdbcTemplate) {
         """.trimIndent()
         return jdbcTemplate.query(sql, inheritorRowMapper, id)
     }
+
+    //查询视图
+    fun getProjectSummary(): List<Map<String, Any>> {
+        val sql = "SELECT * FROM ProjectSummary"
+        return jdbcTemplate.queryForList(sql)
+    }
+
 }

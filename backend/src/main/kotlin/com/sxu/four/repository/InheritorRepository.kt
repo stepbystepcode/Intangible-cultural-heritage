@@ -6,6 +6,8 @@ import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
 import java.sql.ResultSet
 
+
+
 @Repository
 class InheritorRepository(val jdbcTemplate: JdbcTemplate) {
 
@@ -67,4 +69,7 @@ class InheritorRepository(val jdbcTemplate: JdbcTemplate) {
         val sql = "DELETE FROM Inheritors WHERE InheritorID = ?"
         return jdbcTemplate.update(sql, id)
     }
+
 }
+
+

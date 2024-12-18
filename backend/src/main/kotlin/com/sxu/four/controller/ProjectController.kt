@@ -2,6 +2,7 @@ package com.sxu.four.controller
 import org.springframework.jdbc.core.RowMapper
 import com.sxu.four.model.Inheritor
 import com.sxu.four.model.NationalHeritageProject
+import com.sxu.four.repository.LogRepository
 import com.sxu.four.repository.ProjectRepository
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/projects")
-class ProjectController(val repository: ProjectRepository) {
+class ProjectController(val repository: ProjectRepository,val logRepository: LogRepository) {
     val rowMapper = RowMapper<NationalHeritageProject> { rs, _ ->
         NationalHeritageProject(
             projectId = rs.getInt("projectid"),
@@ -102,4 +103,20 @@ class ProjectController(val repository: ProjectRepository) {
         val result = repository.findInheritorsByProjectId(id)
         return ResponseEntity.ok(result)
     }
+
+    //触发器添加日志
+    @GetMapping("/logs")
+    fun getNationalHeritageLogs(): ResponseEntity<List<Map<String, Any>>> {
+        val logs = logRepository.getLogsByTable("national_heritage_projects")
+        return ResponseEntity.ok(logs)
+
+    }
+
+    //获取视图
+    @GetMapping("/summary")
+    fun getProjectSummary(): ResponseEntity<List<Map<String, Any>>> {
+        val result = repository.getProjectSummary()
+        return ResponseEntity.ok(result)
+    }
+
 }

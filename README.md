@@ -44,7 +44,7 @@ This project is licensed under the **GNU General Public License v3.0**. See the 
 
 ## 📐 ER Diagram
 
-The Entity-Relationship Diagram (ERD) for this project was designed using **DrawDB**. It illustrates the relationships between different entities in our ICH information system.
+The Entity-Relationship Diagram (ERD) for this project was designed using **Draw.io**. It illustrates the relationships between different entities in our ICH information system.
 
 *ER Diagram preview image here (optional)*
 

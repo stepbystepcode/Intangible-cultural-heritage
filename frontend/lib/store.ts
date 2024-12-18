@@ -7,6 +7,8 @@ interface GlobalStore {
   toggleSelecting: () => void;
   newPosition: LatLng | null;
   setNewPosition: (newPosition: LatLng) => void;
+  FormVisible: boolean;
+  setFormVisible: (visible: boolean) => void;
 }
 
 export const useGlobalStore = create<GlobalStore>((set) => ({
@@ -14,4 +16,6 @@ export const useGlobalStore = create<GlobalStore>((set) => ({
   toggleSelecting: () => set((state) => ({ isSelecting: !state.isSelecting })),
   newPosition: null,
   setNewPosition: (newPosition: LatLng) => set({ newPosition }),
+  FormVisible: false,
+  setFormVisible: (visible: boolean) => set({ FormVisible: visible }),
 }));

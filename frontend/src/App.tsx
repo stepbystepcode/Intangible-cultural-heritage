@@ -6,7 +6,7 @@ import { useMarkers } from "@/components/useMarkers";
 import "./App.css";
 // import { useGlobalStore } from "@/lib/store";
 export default function HomePage() {
-  const [selectedTab, setSelectedTab] = useState<string>("传承人");
+  const [selectedTab, setSelectedTab] = useState<string>("inheritors");
   const { markers, loading, error } = useMarkers(selectedTab);
   const [selectedMarker, setSelectedMarker] = useState<any | null>(null);
   // const isSelecting = useGlobalStore((state) => state.isSelecting);

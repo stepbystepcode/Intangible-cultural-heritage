@@ -2,7 +2,6 @@
 import { Card, CardContent } from '@/components/ui/card';
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 
 import React, { useEffect, useState } from 'react';
 
@@ -14,9 +13,12 @@ interface ToolbarProps {
   error: string | null;
   children?: React.ReactNode;
 }
+import { useGlobalStore } from "@/lib/store";
 
 const Toolbar: React.FC<ToolbarProps> = ({ selectedTab, onTabChange, loading, error, children }) => {
-  const [formVisible, setFormVisible] = useState(false);
+
+  const formVisible = useGlobalStore((state) => state.FormVisible);
+  const setFormVisible = useGlobalStore((state) => state.setFormVisible);
   const handleFormSubmit = (formData: any) => {
     console.log("提交的表单数据:", formData);
     setFormVisible(false); // 提交后关闭表单
@@ -29,9 +31,9 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedTab, onTabChange, loading, er
       <CardContent className="mt-4 space-y-4">
         <Tabs value={selectedTab} onValueChange={(value) => onTabChange(value)}>
           <TabsList>
-            <TabsTrigger value="传承人">传承人</TabsTrigger>
-            <TabsTrigger value="非物质文化遗产项目">非物质文化遗产项目</TabsTrigger>
-            <TabsTrigger value="保护单位">保护单位</TabsTrigger>
+            <TabsTrigger value="inheritors">传承人</TabsTrigger>
+            <TabsTrigger value="projects">非物质文化遗产项目</TabsTrigger>
+            <TabsTrigger value="protection-units">保护单位</TabsTrigger>
           </TabsList>
         </Tabs>
 
@@ -49,23 +51,6 @@ const Toolbar: React.FC<ToolbarProps> = ({ selectedTab, onTabChange, loading, er
         {error && <p className="text-red-500">{error}</p>}
 
         {!formVisible && children}
-        {!formVisible &&  <div className="flex gap-4 mt-6">
-<Button className='w-full' variant='secondary' onClick={() => {setFormVisible(true)}}>添加</Button>
-        <Button
-          type="button"
-          variant="secondary"
-          className="w-full"
-        >
-        修改
-        </Button>
-        <Button 
-          type="submit" 
-          variant="default"
-          className="w-full bg-red-500 hover:bg-red-600 text-white"
-        >
-          删除
-        </Button>
-      </div>}
       </CardContent>
     </Card>
   );

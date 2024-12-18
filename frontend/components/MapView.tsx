@@ -74,9 +74,9 @@ const MapView: React.FC<MapViewProps> = ({ markers, selectedTab, onMarkerClick }
           }}
         >
           <Popup>
-            {selectedTab === '非物质文化遗产项目' && <strong>{marker.details.projectName}</strong>}
-            {selectedTab === '传承人' && <strong>{marker.details.name}</strong>}
-            {selectedTab === '保护单位' && <strong>{marker.details.unitName}</strong>}
+            {selectedTab === 'projects' && <strong>{marker.details.projectName}</strong>}
+            {selectedTab === 'inheritors' && <strong>{marker.details.name}</strong>}
+            {selectedTab === 'protection-units' && <strong>{marker.details.unitName}</strong>}
           </Popup>
         </Marker>
       ))}

@@ -41,7 +41,7 @@ class UnescoHeritageController(val repository: UnescoHeritageRepository,val logR
     @Operation(summary = "Create a new UNESCO heritage site", description = "Create a new UNESCO heritage site and store it in the database")
     @ApiResponses(value = [
         ApiResponse(responseCode = "201", description = "UNESCO heritage site successfully created"),
-        ApiResponse(responseCode = "400", description = "Bad request")
+        ApiResponse(responseCode = "400", description = "Bad request"),
         ApiResponse(responseCode = "500", description = "Internal server error")
     ])
     fun createHeritage(@RequestBody heritage: UnescoHeritage): ResponseEntity<Map<String, Int>> {

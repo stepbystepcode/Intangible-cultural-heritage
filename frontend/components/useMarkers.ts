@@ -3,9 +3,9 @@ import useSWR from 'swr';
 import axios from 'axios';
 
 const endpointMap: Record<string, string> = {
-  '传承人': '/api/inheritors',
-  '非物质文化遗产项目': '/api/projects',
-  '保护单位': '/api/protection-units'
+  'inheritors': '/api/inheritors',
+  'projects': '/api/projects',
+  'protection-units': '/api/protection-units'
 };
 
 const fetcher = (url: string) => axios.get(url).then(res => res.data);

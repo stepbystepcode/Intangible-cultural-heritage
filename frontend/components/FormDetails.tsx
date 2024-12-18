@@ -49,14 +49,14 @@ interface FormDetailsProps {
 
 // 表单字段配置
 const formFields: FormFields = {
-  '非物质文化遗产项目': [
+  'projects': [
     { name: 'projectName', label: '项目名称', type: 'text', placeholder: '输入项目名称' },
     { name: 'category', label: '分类', type: 'text', placeholder: '输入分类' },
     { name: 'announcementDate', label: '公布日期', type: 'date', placeholder: '' },
     { name: 'type', label: '类型', type: 'text', placeholder: '输入类型' },
     { name: 'applicationRegion', label: '区域', type: 'text', placeholder: '输入区域' },
   ],
-  '传承人': [
+  'inheritors': [
     { name: 'name', label: '姓名', type: 'text', placeholder: '输入姓名' },
     { 
       name: 'gender', 
@@ -72,7 +72,7 @@ const formFields: FormFields = {
     { name: 'category', label: '类别', type: 'text', placeholder: '输入类别' },
     { name: 'projectID', label: '关联项目ID', type: 'text', placeholder: '输入项目ID' },
   ],
-  '保护单位': [
+  'protection-units': [
     { name: 'unitName', label: '单位名称', type: 'text', placeholder: '输入单位名称' },
     { name: 'region', label: '区域', type: 'text', placeholder: '输入区域' },
     { name: 'contactInfo', label: '联系方式', type: 'text', placeholder: '输入联系方式' },
@@ -87,7 +87,7 @@ const isValidPhone = (phone: string) => {
 // 添加 API 端点映射
 const API_ENDPOINTS = {
   '传承人': '/api/inheritors',
-  '非物质文化遗产项目': '/api/project',
+  '非物质文化遗产项目': '/api/projects',
   '保护单位': '/api/protection-units'
 } as const;
 

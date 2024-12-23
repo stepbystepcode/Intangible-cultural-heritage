@@ -11,5 +11,6 @@ data class NationalHeritageProject(
     val applicationRegion: String?,
     val protectionUnitId: Int?,
     val latitude: Double?,
-    val longitude: Double?
+    val longitude: Double?,
+    val detail:String?
 )

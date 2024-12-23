@@ -21,7 +21,9 @@ class ProjectRepository(val jdbcTemplate: JdbcTemplate) {
             applicationRegion = rs.getString("applicationregion"),
             protectionUnitId = rs.getInt("protectionunitid").takeIf { !rs.wasNull() },
             latitude = rs.getDouble("latitude").takeIf { !rs.wasNull() },
-            longitude = rs.getDouble("longitude").takeIf { !rs.wasNull() }
+            longitude = rs.getDouble("longitude").takeIf { !rs.wasNull() },
+            detail = rs.getString("detail")
+
         )
     }
 

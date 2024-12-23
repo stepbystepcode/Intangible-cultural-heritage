@@ -26,7 +26,8 @@ class ProjectController(val repository: ProjectRepository,val logRepository: Log
             applicationRegion = rs.getString("applicationregion"),
             protectionUnitId = rs.getInt("protectionunitid"),
             latitude = rs.getDouble("latitude"),
-            longitude = rs.getDouble("longitude")
+            longitude = rs.getDouble("longitude"),
+            detail=rs.getString("detail")
         )
     }
 

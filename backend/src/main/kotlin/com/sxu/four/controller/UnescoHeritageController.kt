@@ -1,7 +1,7 @@
 package com.sxu.four.controller
 
 import com.sxu.four.model.UnescoHeritage
-import com.sxu.four.repository.LogRepository
+
 import com.sxu.four.repository.UnescoHeritageRepository
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/unesco-list")
-class UnescoHeritageController(val repository: UnescoHeritageRepository,val logRepository: LogRepository) {
+class UnescoHeritageController(val repository: UnescoHeritageRepository) {
 
     @GetMapping
     @Operation(summary = "Get all UNESCO heritage sites", description = "Fetch a list of all UNESCO heritage sites")
@@ -73,9 +73,9 @@ class UnescoHeritageController(val repository: UnescoHeritageRepository,val logR
     }
 
     //触发器添加日志
-    @GetMapping("/logs")
-    fun getUnescoHeritageLogs(): ResponseEntity<List<Map<String, Any>>> {
-        val logs = logRepository.getLogsByTable("unesco_heritage_list")
-        return ResponseEntity.ok(logs)
-    }
+//    @GetMapping("/logs")
+//    fun getUnescoHeritageLogs(): ResponseEntity<List<Map<String, Any>>> {
+//        val logs = logRepository.getLogsByTable("unesco_heritage_list")
+//        return ResponseEntity.ok(logs)
+//    }
 }

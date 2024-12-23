@@ -2,7 +2,6 @@ package com.sxu.four.controller
 import org.springframework.jdbc.core.RowMapper
 import com.sxu.four.model.Inheritor
 import com.sxu.four.model.NationalHeritageProject
-import com.sxu.four.repository.LogRepository
 import com.sxu.four.repository.ProjectRepository
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.responses.ApiResponse
@@ -11,14 +10,14 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
-import java.sql.Date
+
 
 @RestController
 @RequestMapping("/api/projects")
-class ProjectController(val repository: ProjectRepository,val logRepository: LogRepository) {
+class ProjectController(val repository: ProjectRepository) {
     val rowMapper = RowMapper<NationalHeritageProject> { rs, _ ->
         NationalHeritageProject(
-            projectId = rs.getInt("projectid"),
+            //projectId = rs.getInt("projectid"),
             projectName = rs.getString("projectname"),
             category = rs.getString("category"),
             announcementDate = rs.getDate("announcementdate"),
@@ -106,13 +105,13 @@ class ProjectController(val repository: ProjectRepository,val logRepository: Log
         return ResponseEntity.ok(result)
     }
 
-    //触发器添加日志
-    @GetMapping("/logs")
-    fun getNationalHeritageLogs(): ResponseEntity<List<Map<String, Any>>> {
-        val logs = logRepository.getLogsByTable("national_heritage_projects")
-        return ResponseEntity.ok(logs)
-
-    }
+//    //触发器添加日志
+//    @GetMapping("/logs")
+//    fun getNationalHeritageLogs(): ResponseEntity<List<Map<String, Any>>> {
+//        val logs = logRepository.getLogsByTable("national_heritage_projects")
+//        return ResponseEntity.ok(logs)
+//
+//    }
 
     //获取视图
     @GetMapping("/summary")

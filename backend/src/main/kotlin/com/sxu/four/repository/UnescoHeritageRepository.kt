@@ -11,7 +11,7 @@ class UnescoHeritageRepository(val jdbcTemplate: JdbcTemplate) {
 
     private val rowMapper = RowMapper<UnescoHeritage> { rs: ResultSet, _: Int ->
         UnescoHeritage(
-            listId = rs.getInt("listid"),
+            //listId = rs.getInt("listid"),
             projectName = rs.getString("projectname"),
             yearIncluded = rs.getInt("yearincluded"),
             type = rs.getString("type"),

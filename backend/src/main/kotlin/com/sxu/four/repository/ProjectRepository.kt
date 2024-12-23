@@ -13,7 +13,7 @@ class ProjectRepository(val jdbcTemplate: JdbcTemplate) {
     // RowMapper for NationalHeritageProject
     private val projectRowMapper = RowMapper<NationalHeritageProject> { rs: ResultSet, _: Int ->
         NationalHeritageProject(
-            projectId = rs.getInt("projectid"),
+            //projectId = rs.getInt("projectid"),
             projectName = rs.getString("projectname"),
             category = rs.getString("category"),
             announcementDate = rs.getDate("announcementdate"),
